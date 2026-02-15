@@ -1,9 +1,8 @@
 import streamlit as st
 from openai import OpenAI
 
-# Get API key from Streamlit secrets
-api_key = st.secrets["KEY"]
-client = OpenAI(api_key=api_key)
+# Use Streamlit secrets for API key (for deployment)
+client = OpenAI(api_key=st.secrets["KEY"])
 
 st.set_page_config(page_title="AI Trip Planner", page_icon="🌍")
 
@@ -20,7 +19,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     origin = st.text_input("Departure City")
-    days = st.number_input("Number of Travel Days", min_value=1, max_value=30)
+    days = st.number_input("Number of Travel Days", min_value=1, max_value=30, value=5)
 
 with col2:
     budget = st.text_input("Total Budget (USD)")
@@ -44,7 +43,7 @@ if st.button("Generate Travel Plan ✈️"):
         st.warning("Please enter a country.")
     else:
         prompt = f"""
-        Create a detailed travel plan:
+        Create a detailed travel plan.
 
         Country: {country}
         Departure City: {origin}
@@ -74,5 +73,3 @@ if st.button("Generate Travel Plan ✈️"):
 
         st.success("Your Trip Plan is Ready! 🎉")
         st.markdown(plan)
-
-
